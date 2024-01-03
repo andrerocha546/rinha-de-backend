@@ -34,6 +34,7 @@ jobs:
 #          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
 #          IMAGE_TAG: ${{ github.sha }}
         run: |
+          ls -la
           docker build --no-cache -t ${{ steps.login-ecr.outputs.registry }}/${{ github.repository }}:${{ github.sha }} .
           docker push ${{ steps.login-ecr.outputs.registry }}/${{ github.repository }}:${{ github.sha }}
           echo "image=${{ steps.login-ecr.outputs.registry }}/${{ github.repository }}:${{ github.sha }}" >> $GITHUB_OUTPUT
