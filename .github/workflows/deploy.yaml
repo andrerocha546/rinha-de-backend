@@ -34,7 +34,7 @@ jobs:
           gradle-version: 8.5
 
       - name: Run build with Gradle Wrapper
-        run: ./gradlew -v
+        run: ./gradlew clean build
 
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
