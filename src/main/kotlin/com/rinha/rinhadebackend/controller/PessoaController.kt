@@ -26,8 +26,12 @@ class PessoaController(
     }
 
     @GetMapping(value = ["pessoas/{id}"])
-    fun getPessoaById(@PathVariable id: Long): String {
-        return "get $id"
+    fun getPessoaById(@PathVariable id: Long): ResponseEntity<out Any> {
+        val pessoa = service.getPessoaById(id)
+        return if (pessoa != null)
+            ResponseEntity(pessoa, HttpStatus.OK)
+        else
+            ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND)
     }
 
     @GetMapping(value = ["pessoas"])
@@ -36,8 +40,9 @@ class PessoaController(
     }
 
     @GetMapping(value = ["contagem-pessoas"])
-    fun getPessoaCount(): String {
-        return "get 300"
+    fun getPessoaCount(): ResponseEntity<Long> {
+        val count: Long = service.getPessoasCount()
+        return ResponseEntity(count, HttpStatus.OK)
     }
 
 }

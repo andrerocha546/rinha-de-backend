@@ -3,7 +3,10 @@ package com.rinha.rinhadebackend.service
 import com.rinha.rinhadebackend.controller.Pessoa
 import com.rinha.rinhadebackend.model.Pessoa as PessoaModel
 import com.rinha.rinhadebackend.repository.PessoaRepository
+import org.springframework.data.repository.findByIdOrNull
+import org.springframework.stereotype.Repository
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class PessoaService(
@@ -22,6 +25,14 @@ class PessoaService(
         } catch (ex: RuntimeException) {
             return null
         }
+    }
+
+    fun getPessoaById(id: Long): PessoaModel? {
+        return repository.findByIdOrNull(id)
+    }
+
+    fun getPessoasCount(): Long {
+        return repository.count()
     }
 
 }
