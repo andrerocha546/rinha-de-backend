@@ -1,0 +1,20 @@
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    hostname: mysql
+    command: --innodb-use-native-aio=0
+    restart: always
+    tty: true
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_DATABASE=products
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
+  #    deploy:
+  #      resources:
+  #        limits:
+  #          memory: 2048M
