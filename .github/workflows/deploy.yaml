@@ -28,13 +28,18 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Run build with Gradle Wrapper
+        run: ./gradlew build
+
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
 #        env:
 #          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
 #          IMAGE_TAG: ${{ github.sha }}
         run: |
-          ls -la
           docker build --no-cache -t ${{ steps.login-ecr.outputs.registry }}/${{ github.repository }}:${{ github.sha }} .
           docker push ${{ steps.login-ecr.outputs.registry }}/${{ github.repository }}:${{ github.sha }}
           echo "image=${{ steps.login-ecr.outputs.registry }}/${{ github.repository }}:${{ github.sha }}" >> $GITHUB_OUTPUT
