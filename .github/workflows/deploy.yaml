@@ -41,6 +41,11 @@ jobs:
       - name: Run build with Gradle Wrapper
         run: ./gradlew clean build
 
+      - name: Create ECR Repository if it doesnt exists
+        env:
+          GIT_REGISTRY: ${{ github.repository }}
+        run: aws ecr describe-repositories --repository-names $GIT_REGISTRY || aws ecr create-repository --repository-name $GIT_REGISTRY
+
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
         env:
