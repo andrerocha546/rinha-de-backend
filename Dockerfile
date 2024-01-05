@@ -1,15 +1,17 @@
-#FROM gradle:8.5-jdk17-alpine AS BUILD
-#WORKDIR /app/
-#COPY . .
-#RUN gradle clean build
+FROM gradle:8.5-jdk17-alpine AS BUILD_API
+WORKDIR /app/
+COPY . .
+RUN gradle build
 
 
 FROM openjdk:17-alpine
 
-ENV JAR_FILE=build/libs/rinha-de-backend-0.0.1-SNAPSHOT.jar
+ENV HOME_DIR=/app/
+ENV JAR_FILE=$HOME_DIR/build/libs/rinha-de-backend-0.0.1-SNAPSHOT.jar
 
-COPY ${JAR_FILE} /app/api.jar
-WORKDIR /app/
+WORKDIR $HOME_DIR
+
+COPY --from=BUILD_API ${JAR_FILE} api.jar
 
 EXPOSE 8080
 
