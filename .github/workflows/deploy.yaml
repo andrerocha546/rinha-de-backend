@@ -60,7 +60,7 @@ jobs:
       - name: Trigger EC2 Terraform Workflow
         uses: convictional/trigger-workflow-and-wait@v1.6.1
         env:
-          GITHUB_OWNER: "andrerocha546"
+          GITHUB_OWNER: ${{ github.event.actor.login }}
           GITHUB_REPO: "terraform"
           REPOSITORY_NAME: ${{ github.event.repository.name }}
           PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
