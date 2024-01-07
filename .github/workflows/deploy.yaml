@@ -57,29 +57,14 @@ jobs:
           docker push $ECR_REGISTRY/$GIT_REGISTRY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$GIT_REGISTRY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
-#      - name: Trigger EC2 Terraform Workflow
-#        env:
-#          GITHUB_OWNER: ${{ github.event.actor.login }}
-#          GITHUB_REPO: terraform
-#          WORKFLOW_FILE: ec2_instance.yml
-#          REPOSITORY_NAME: ${{ github.event.repository.name }}
-#          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-#        run: curl -sSL "https://api.github.com/repos/$GITHUB_OWNER/$GITHUB_REPO/actions/workflows/$WORKFLOW_FILE/dispatches" -H "Authorization: Bearer $PERSONAL_ACCESS_TOKEN" -H "Accept: application/vnd.github.v3+json" -H "Content-Type: application/json" --data "{\"ref\":\"main\",\"inputs\":{}}"
-#        uses: convictional/trigger-workflow-and-wait@v1.6.1
-#        env:
-#          GITHUB_OWNER: ${{ github.event.actor.login }}
-#          GITHUB_REPO: terraform
-#          REPOSITORY_NAME: ${{ github.event.repository.name }}
-#          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-#        with:
-#          owner: $GITHUB_OWNER
-#          repo: $GITHUB_REPO
-#          github_token: $PERSONAL_ACCESS_TOKEN
-#          workflow_file_name: ec2_instance.yml
-#          ref: main
-#          propagate_failure: true
-#          trigger_workflow: true
-#          wait_workflow: true
+      - name: Trigger EC2 Terraform Workflow
+        env:
+          WORKFLOW_FILE: ec2_instance.yml
+          WORKFLOW_REPOSITORY: andrerocha546/terraform
+          REPOSITORY_NAME: ${{ github.event.repository.name }}
+        run: |
+          echo '{"instance_name": "$REPOSITORY_NAME", "subdomain": "$REPOSITORY_NAME"}' \
+          | gh  workflow run $WORKFLOW_FILE --json -R $WORKFLOW_REPOSITORY
 
 #      - name: Fill in the new image ID in the Amazon ECS task definition
 #        id: task-def
@@ -97,18 +82,18 @@ jobs:
 #          cluster: ${{ env.ECS_CLUSTER }}
 #          wait-for-service-stability: true
 
-  call-workflow-passing-data:
-    uses: andrerocha546/terraform/.github/workflows/ec2_instance.yml@main
-#    env:
-#      GITHUB_OWNER: ${{ github.event.actor.login }}
-#      GITHUB_REPO: terraform
-#      WORKFLOW_FILE: ec2_instance.yml
-#      REPOSITORY_NAME: ${{ github.event.repository.name }}
-#      PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-    with:
-      instance_name: ${{ github.event.repository.name }}
-      subdomain: ${{ github.event.repository.name }}
-    secrets:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY_ID: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: ${{ secrets.AWS_REGION }}
+#  call-workflow-passing-data:
+#    uses: andrerocha546/terraform/.github/workflows/ec2_instance.yml@main
+##    env:
+##      GITHUB_OWNER: ${{ github.event.actor.login }}
+##      GITHUB_REPO: terraform
+##      WORKFLOW_FILE: ec2_instance.yml
+##      REPOSITORY_NAME: ${{ github.event.repository.name }}
+##      PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+#    with:
+#      instance_name: ${{ github.event.repository.name }}
+#      subdomain: ${{ github.event.repository.name }}
+#    secrets:
+#      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#      AWS_SECRET_ACCESS_KEY_ID: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#      AWS_REGION: ${{ secrets.AWS_REGION }}
