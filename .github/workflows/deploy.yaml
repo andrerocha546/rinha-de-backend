@@ -74,7 +74,7 @@ jobs:
 #            "instace_name": $REPOSITORY_NAME,
 #            "subdomain": $REPOSITORY_NAME
 #          }'
-          propagate_failure: false
+          propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
 
