@@ -65,7 +65,7 @@ jobs:
           PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         run: |
           curl --fail-with-body -sSL
-                "https://api.github.com/repos/$GITHUB_OWNER/$GITHUB_REPO/actions/workflows/ec2_instance.yml/dispatches" \
+                "https://api.github.com/repos/andrerocha546/terraform/actions/workflows/ec2_instance.yml/dispatches" \
                 -H "Authorization: Bearer $PERSONAL_ACCESS_TOKEN" \
                 -H 'Accept: application/vnd.github.v3+json' \
                 -H 'Content-Type: application/json' \
