@@ -20,7 +20,7 @@ jobs:
       - name: Set TimeZone
         uses: szenius/set-timezone@v1.2
         with:
-          timezoneLinux: "Asia/Singapore"
+          timezoneLinux: "Brazil/Sao_Paulo"
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
