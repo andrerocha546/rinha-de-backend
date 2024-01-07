@@ -59,6 +59,7 @@ jobs:
 
       - name: Trigger EC2 Terraform Workflow
         env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           WORKFLOW_FILE: ec2_instance.yml
           WORKFLOW_REPOSITORY: andrerocha546/terraform
           REPOSITORY_NAME: ${{ github.event.repository.name }}
