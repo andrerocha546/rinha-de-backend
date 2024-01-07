@@ -105,6 +105,6 @@ jobs:
 #      WORKFLOW_FILE: ec2_instance.yml
 #      REPOSITORY_NAME: ${{ github.event.repository.name }}
 #      PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-    with:
-      test: locurage
+#    with:
+#      test: locurage
     secrets: inherit
