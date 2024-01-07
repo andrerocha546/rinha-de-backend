@@ -64,8 +64,8 @@ jobs:
           WORKFLOW_FILE: ec2_instance.yml
           REPOSITORY_NAME: ${{ github.event.repository.name }}
           PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-        run: >-
-          curl -sSL https://api.github.com/repos/$GITHUB_OWNER/$GITHUB_REPO/actions/workflows/$WORKFLOW_FILE/dispatches 
+        run: >
+          curl -sSL "https://api.github.com/repos/$GITHUB_OWNER/$GITHUB_REPO/actions/workflows/$WORKFLOW_FILE/dispatches"
           -H "Authorization: Bearer $PERSONAL_ACCESS_TOKEN" 
           -H "Accept: application/vnd.github.v3+json" 
           -H "Content-Type: application/json" 
