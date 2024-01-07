@@ -70,10 +70,10 @@ jobs:
           github_token: $GITHUB_TOKEN
           workflow_file_name: ec2_instance.yml
           ref: main
-          client_payload: '{
-            "instace_name": $REPOSITORY_NAME,
-            "subdomain": $REPOSITORY_NAME
-          }'
+#          client_payload: '{
+#            "instace_name": $REPOSITORY_NAME,
+#            "subdomain": $REPOSITORY_NAME
+#          }'
           propagate_failure: false
           trigger_workflow: true
           wait_workflow: true
