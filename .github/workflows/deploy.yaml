@@ -50,12 +50,33 @@ jobs:
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          GIT_REGISTRY: ${{ github.repository }}
+          GIT_REGISTRY: ${{ github.event.repository.name }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build --no-cache -t $ECR_REGISTRY/$GIT_REGISTRY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$GIT_REGISTRY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$GIT_REGISTRY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+      - name: Trigger EC2 Terraform Workflow
+        uses: convictional/trigger-workflow-and-wait@v1.6.1
+        env:
+          GITHUB_OWNER: ${{ github.event.pull_request.head.repo.owner.login }}
+          GITHUB_REPO: "terraform"
+          REPOSITORY_NAME: ${{ github.event.repository.name }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_PERSONAL_ACCESS_TOKEN }}
+        with:
+          owner: $GITHUB_OWNER
+          repo: $GITHUB_REPO
+          github_token: $GITHUB_TOKEN
+          workflow_file_name: main.yml
+          ref: main
+          client_payload: '{
+            "instace_name": $REPOSITORY_NAME,
+            "subdomain": $REPOSITORY_NAME
+          }'
+          propagate_failure: false
+          trigger_workflow: true
+          wait_workflow: true
 
 #      - name: Fill in the new image ID in the Amazon ECS task definition
 #        id: task-def
