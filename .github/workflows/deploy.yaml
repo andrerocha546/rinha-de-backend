@@ -57,17 +57,7 @@ jobs:
           docker push $ECR_REGISTRY/$GIT_REGISTRY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$GIT_REGISTRY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
-      - name: Trigger EC2 Terraform Workflow
-        uses: andrerocha546/terraform/.github/workflows/ec2_instance.yml@main
-        env:
-          GITHUB_OWNER: ${{ github.event.actor.login }}
-          GITHUB_REPO: terraform
-          WORKFLOW_FILE: ec2_instance.yml
-          REPOSITORY_NAME: ${{ github.event.repository.name }}
-          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-#        with:
-#          config-path: .github/labeler.yml
-        secrets: inherit
+#      - name: Trigger EC2 Terraform Workflow
 #        env:
 #          GITHUB_OWNER: ${{ github.event.actor.login }}
 #          GITHUB_REPO: terraform
@@ -106,3 +96,15 @@ jobs:
 #          service: ${{ env.ECS_SERVICE }}
 #          cluster: ${{ env.ECS_CLUSTER }}
 #          wait-for-service-stability: true
+
+  call-workflow-passing-data:
+    uses: andrerocha546/terraform/.github/workflows/ec2_instance.yml@main
+#    env:
+#      GITHUB_OWNER: ${{ github.event.actor.login }}
+#      GITHUB_REPO: terraform
+#      WORKFLOW_FILE: ec2_instance.yml
+#      REPOSITORY_NAME: ${{ github.event.repository.name }}
+#      PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+    #        with:
+    #          config-path: .github/labeler.yml
+    secrets: inherit
