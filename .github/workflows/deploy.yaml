@@ -63,11 +63,11 @@ jobs:
           GITHUB_OWNER: "andrerocha546"
           GITHUB_REPO: "terraform"
           REPOSITORY_NAME: ${{ github.event.repository.name }}
-          GITHUB_TOKEN: ${{ secrets.GIT_PERSONAL_ACCESS_TOKEN }}
+          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         with:
           owner: $GITHUB_OWNER
           repo: $GITHUB_REPO
-          github_token: "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"
+          github_token: $PERSONAL_ACCESS_TOKEN
           workflow_file_name: ec2_instance.yml
           ref: main
           propagate_failure: true
