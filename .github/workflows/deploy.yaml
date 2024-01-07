@@ -58,21 +58,33 @@ jobs:
           echo "image=$ECR_REGISTRY/$GIT_REGISTRY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
       - name: Trigger EC2 Terraform Workflow
-        uses: convictional/trigger-workflow-and-wait@v1.6.1
         env:
           GITHUB_OWNER: ${{ github.event.actor.login }}
           GITHUB_REPO: terraform
           REPOSITORY_NAME: ${{ github.event.repository.name }}
           PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-        with:
-          owner: $GITHUB_OWNER
-          repo: $GITHUB_REPO
-          github_token: $PERSONAL_ACCESS_TOKEN
-          workflow_file_name: ec2_instance.yml
-          ref: main
-          propagate_failure: true
-          trigger_workflow: true
-          wait_workflow: true
+        run: |
+          curl --fail-with-body -sSL
+                "https://api.github.com/repos/$GITHUB_OWNER/$GITHUB_REPO/actions/workflows/ec2_instance.yml/dispatches" \
+                -H "Authorization: Bearer $PERSONAL_ACCESS_TOKEN" \
+                -H 'Accept: application/vnd.github.v3+json' \
+                -H 'Content-Type: application/json' \
+                --data "{\"ref\":\"main\",\"inputs\":{}}"
+#        uses: convictional/trigger-workflow-and-wait@v1.6.1
+#        env:
+#          GITHUB_OWNER: ${{ github.event.actor.login }}
+#          GITHUB_REPO: terraform
+#          REPOSITORY_NAME: ${{ github.event.repository.name }}
+#          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+#        with:
+#          owner: $GITHUB_OWNER
+#          repo: $GITHUB_REPO
+#          github_token: $PERSONAL_ACCESS_TOKEN
+#          workflow_file_name: ec2_instance.yml
+#          ref: main
+#          propagate_failure: true
+#          trigger_workflow: true
+#          wait_workflow: true
 
 #      - name: Fill in the new image ID in the Amazon ECS task definition
 #        id: task-def
