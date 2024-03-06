@@ -1,20 +1,26 @@
 package com.rinha.rinhadebackend.model
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import jakarta.persistence.*
+import org.hibernate.annotations.GenericGenerator
+import java.util.*
 
 @Entity
 class Pessoa(
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 32)
     val apelido: String? = null,
-    @Column(nullable = false)
+
+    @Column(nullable = false, length = 100)
     val nome: String? = null,
+
+    @Column(nullable = false, length = 10)
     val nascimento: String? = null,
+
+    @Column(columnDefinition = "TEXT")
+    @Convert(converter = StringListConverter::class)
+    val stack: List<String> = emptyList()
 ) {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    val id: UUID? = null
 }

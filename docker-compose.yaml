@@ -1,4 +1,42 @@
 services:
+  api1:
+    hostname: api1
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    expose:
+      - "8080"
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '0.25'
+#          memory: '0.5GB'
+
+  api2:
+    hostname: api2
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    expose:
+      - "8080"
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '0.25'
+#          memory: '0.5GB'
+
   mysql:
     image: mysql:latest
     container_name: mysql
@@ -9,7 +47,7 @@ services:
     ports:
       - 3306:3306
     environment:
-      - MYSQL_DATABASE=products
+      - MYSQL_DATABASE=people
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
     extra_hosts:

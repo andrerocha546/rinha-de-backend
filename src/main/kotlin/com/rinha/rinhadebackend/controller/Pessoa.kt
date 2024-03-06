@@ -4,4 +4,5 @@ data class Pessoa(
     val apelido: String?,
     val nome: String?,
     val nascimento: String,
+    val stack: List<String>,
 )
